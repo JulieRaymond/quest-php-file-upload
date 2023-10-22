@@ -36,12 +36,29 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
       echo "First Name: " . $_POST['firstName'] . "<br>";
       echo "Last Name: " . $_POST['lastName'] . "<br>";
       echo "Age: " . $_POST['age'] . "<br>";
+
+      // Add a Delete button
+      echo '<form method="POST">';
+      echo '<input type="hidden" name="deleteFile" value="' . $uploadFile . '" />';
+      echo '<button name="delete">Delete</button>';
+      echo '</form>';
     } else {
       echo "An error occurred while uploading the file.";
     }
   } else {
     foreach ($errors as $error) {
       echo $error . '<br>';
+    }
+  }
+
+  if (isset($_POST['delete'])) {
+    $fileToDelete = $_POST['deleteFile'];
+    if (file_exists($fileToDelete)) {
+      if (unlink($fileToDelete)) {
+        echo "File deleted successfully!<br>";
+      } else {
+        echo "An error occurred while deleting the file.<br>";
+      }
     }
   }
 }
